@@ -1,9 +1,7 @@
 import numpy as np
 import cv2
 
-video = cv2.VideoCapture('fastIshSingle.mov')
-#size = (int(video.get(cv2.CV_CAP_PROP_FRAME_WIDTH)),
- #       int(video.get(cv2.CV_CAP_PROP_FRAME_HEIGHT)))
+video = cv2.VideoCapture('speedOne.mov')
 
 #fourcc = cv2.VideoWriter_fourcc(*'XVID')
 #out = cv2.VideoWriter('single.avi', fourcc, 20.0, (640,400))
@@ -33,7 +31,14 @@ while (video.isOpened()):
 			if cArea > 3500:
 				x,y,w,h = cv2.boundingRect(largestContour)
 				cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
-				print cArea
+				print "Area: ",cArea
+				
+				try:
+						BGR = frameCopy[x+w/2][y+h/2]
+						cv2.circle(frameCopy,(x+w/2,y+h/2), 10, (0,255,0),-1)
+						print "BGR", BGR
+				except Exception, e:
+						print e
 #				cv2.drawContours(frameCopy, largestContour, -1, (0,0,255), 1)			
 	#	cv2.imshow("frame", frameCopy)
 
