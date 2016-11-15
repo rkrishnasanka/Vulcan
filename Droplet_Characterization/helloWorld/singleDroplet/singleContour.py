@@ -34,17 +34,12 @@ while (video.isOpened()):
 				print "Area: ",cArea
 				
 				try:
-					BGR = frameCopy[x][y]
-					cv2.circle(frameCopy,(x+w/2,y+h/2), 2, (0,255,0),-1)
+					BGR = frameCopy[y+h/2][x+w//2]
 					print "BGR", BGR
 				except Exception, e:
 #					print e
 					pass
-#				cv2.drawContours(frameCopy, largestContour, -1, (0,0,255), 1)			
-	#	cv2.imshow("frame", frameCopy)
-
-#		x,y,w,h = cv2.boundingRect(contours[0])
-#		cv2.rectangle(frameCopy, (x,y), (x+w, y+h), (0,255,0), 2)
+#				cv2.drawContours(frameCopy, largestContour, -1, (0,0,255), 1)
 
 		cv2.imshow("frame", frameCopy)
 
