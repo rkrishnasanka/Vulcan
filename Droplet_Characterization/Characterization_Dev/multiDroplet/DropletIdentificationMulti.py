@@ -1,11 +1,16 @@
+import os,sys
+path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if not path in sys.path:
+	sys.path.insert(1, path)
+del path
+
 import numpy as np
 import cv2
-import argparse
+from VulcanParseAndFormatting import *
 
-ap = argparse.ArgumentParser()
-ap.add_argument("-v", "--video", help = "path to the video")
-args = vars(ap.parse_args()) 
-video = cv2.VideoCapture(args["video"])
+ap = CharacterizationInputParsing()
+video = cv2.VideoCapture(ap.args["video"])
+outFormat = CharacterizationOutputFormatting()
 
 bgSub = cv2.createBackgroundSubtractorMOG2()
 movingAverageArea = 0
