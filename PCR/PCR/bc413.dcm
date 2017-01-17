@@ -1,0 +1,39 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP BC413
+D 30V Vce, 0.1A Ic, NPN, Small Signal Transistor, TO-92
+K BC413 NPN Transistor
+F http://www.cdil.com/datasheets/bc413_14_b_c.pdf
+$ENDCMP
+#
+$CMP BC413B
+D 30V Vce, 0.1A Ic, NPN, Small Signal Transistor, TO-92
+K BC413 NPN Transistor
+F http://www.cdil.com/datasheets/bc413_14_b_c.pdf
+$ENDCMP
+#
+$CMP BC413C
+D 30V Vce, 0.1A Ic, NPN, Small Signal Transistor, TO-92
+K BC413 NPN Transistor
+F http://www.cdil.com/datasheets/bc413_14_b_c.pdf
+$ENDCMP
+#
+$CMP BC414
+D 45V Vce, 0.1A Ic, NPN, Small Signal Transistor, TO-92
+K BC414 NPN Transistor
+F http://www.cdil.com/datasheets/bc413_14_b_c.pdf
+$ENDCMP
+#
+$CMP BC414B
+D 45V Vce, 0.1A Ic, NPN, Small Signal Transistor, TO-92
+K BC414 NPN Transistor
+F http://www.cdil.com/datasheets/bc413_14_b_c.pdf
+$ENDCMP
+#
+$CMP BC414C
+D 45V Vce, 0.1A Ic, NPN, Small Signal Transistor, TO-92
+K BC413 NPN Transistor
+F http://www.cdil.com/datasheets/bc413_14_b_c.pdf
+$ENDCMP
+#
+#End Doc Library
