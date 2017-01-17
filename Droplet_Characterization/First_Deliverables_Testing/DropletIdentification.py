@@ -16,8 +16,8 @@ while (video.isOpened()):
 		frame = cv2.medianBlur(frame, 13)
 		frame = bgSub.apply(frame)
 			
-		ret, thresh = cv2.threshold(frame,127,255,0)
-		im2, contours, hierarchy = cv2.findContours(frame,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)	
+		ret, thresh = cv2.threshold(frame,0,255,0)
+#		im2, contours, hierarchy = cv2.findContours(frame,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)	
 
 		areas = []
 		largestContour = []
@@ -30,7 +30,7 @@ while (video.isOpened()):
 					largestContour = x
 			if cArea > 3500:
 				x,y,w,h = cv2.boundingRect(largestContour)
-				cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
+				cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),-1)
 				cv2.drawContours(frameCopy, largestContour, -1, (0,0,255), 2)			
 
 		cv2.imshow("frame", frameCopy)
