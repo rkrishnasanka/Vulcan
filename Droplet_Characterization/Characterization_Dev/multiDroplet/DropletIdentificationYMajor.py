@@ -14,12 +14,6 @@ outFormat = CharacterizationOutputFormatting()
 
 bgSub = cv2.createBackgroundSubtractorMOG2()
 movingAverageArea = 0
-numContours = 0
-lowY = 1000
-highY = 0
-
-lowX = 1000
-highX = 0
 
 frameCount = 0
 dropletCount = 0
