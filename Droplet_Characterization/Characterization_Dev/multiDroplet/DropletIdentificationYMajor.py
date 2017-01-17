@@ -7,6 +7,7 @@ del path
 import numpy as np
 import cv2
 from VulcanParseAndFormatting import *
+from VulcanUsefulFunctions import *
 
 ap = CharacterizationInputParsing()
 video = cv2.VideoCapture(ap.args["video"])
@@ -21,19 +22,13 @@ dropletCount = 0
 channelWidthInPixels = 0
 pixelToMMRatio = 0
 
-def ColorDistance(rgb1,rgb2):
-	'''d = {} distance between two colors(3)'''
-	rm = 0.5*(rgb1[0]+rgb2[0])
-	d = sum((2+rm,4,3-rm)*(rgb1-rgb2)**2)**0.5
-	return d
-
 while (video.isOpened()):
 	ret, frame = video.read()
 	if ret == True:
 		frameCount = frameCount + 1
 		frameCopy = frame
 
-		cv2.line( frameCopy, (0,100), (600,100), (255,0,0))
+		cv2.line( frameCopy, (0,100), (1200,100), (255,0,0))
 #		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 		frame = cv2.medianBlur(frame, 13)
 		frame = bgSub.apply(frame)
@@ -49,7 +44,6 @@ while (video.isOpened()):
 			for contour in contours:
 				cArea = cv2.contourArea(contour)
 #				movingAverageArea = (movingAverageArea*numContours + cArea) / (numContours+1)
-				numContours = numContours + 1
 #				if currArea > cArea:
 #					cArea = currArea
 #					largestContour = x
@@ -69,8 +63,8 @@ while (video.isOpened()):
 					if frameCount > 10:	
 						dropletCount = dropletCount + 1
 						frameCount = 0
-						blueDist = ColorDistance(frameCopy[y+h/2][x+w/2],[255,1,1])
-						redDist = ColorDistance(frameCopy[y+h/2][x+w/2],[1,1,255])
+						blueDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[255,1,1])
+						redDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[1,1,255])
 					
 						if blueDist < 2000:
 							print dropletCount, " blue", cv2.contourArea(contour)*pixelToMMRatio
