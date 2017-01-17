@@ -7,6 +7,7 @@ del path
 import numpy as np
 import cv2
 from VulcanParseAndFormatting import *
+from VulcanUsefulFunctions import *
 
 ap = CharacterizationInputParsing()
 video = cv2.VideoCapture(ap.args["video"])
@@ -16,12 +17,6 @@ bgSub = cv2.createBackgroundSubtractorMOG2()
 X_DETECTION_BORDER = 100
 
 movingAverageArea = 0
-numContours = 0
-lowY = 1000
-highY = 0
-
-lowX = 1000
-highX = 0
 
 frameCount = 0
 dropletCount = 0
@@ -56,7 +51,6 @@ while (video.isOpened()):
 			for contour in contours:
 				cArea = cv2.contourArea(contour)
 #				movingAverageArea = (movingAverageArea*numContours + cArea) / (numContours+1)
-				numContours = numContours + 1
 #				if currArea > cArea:
 #					cArea = currArea
 #					largestContour = x
@@ -68,20 +62,6 @@ while (video.isOpened()):
 					channelWidthInPixels = (w + h) / 2
 					pixelToMMRatio = 1 / float(channelWidthInPixels)
 					print channelWidthInPixels, pixelToMMRatio
-#				if frameCount > 5:
-#					if y < lowY:
-#						lowY = y
-#						print "LowY: ", lowY
-#					if y > highY:
-#						highY = y
-#						print "highY: ", highY
-#					if x < lowX:
-#						lowX = x
-#						print "LowX: ", lowX
-#					if x > highX:
-#						highX = x
-#						print "HighX: ", highX
-#				print BGR
 
 				cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,0,255),1)
 				cv2.drawContours(frameCopy, contour, -1, (0,0,255), 1)
@@ -93,8 +73,8 @@ while (video.isOpened()):
 					if frameCount > 15:	
 						dropletCount = dropletCount + 1
 						frameCount = 0
-						blueDist = ColorDistance(frameCopy[y+h/2][x+w/2],[255,1,1])
-						redDist = ColorDistance(frameCopy[y+h/2][x+w/2],[1,1,255])
+						blueDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[255,1,1])
+						redDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[1,1,255])
 					
 						if blueDist < 2000:
 							print dropletCount, " blue", cv2.contourArea(contour)*pixelToMMRatio, cv2.contourArea(contour)
