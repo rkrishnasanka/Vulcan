@@ -14,7 +14,7 @@ video = cv2.VideoCapture(ap.args["video"])
 outFormat = CharacterizationOutputFormatting()
 
 bgSub = cv2.createBackgroundSubtractorMOG2()
-X_DETECTION_BORDER = 100
+X_DETECTION_BORDER = 50
 
 movingAverageArea = 0
 
@@ -66,20 +66,20 @@ while (video.isOpened()):
 				cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,0,255),1)
 				cv2.drawContours(frameCopy, contour, -1, (0,0,255), 1)
 			
-				if x+w < X_DETECTION_BORDER and cArea > 1000:
+				if x+w < X_DETECTION_BORDER and cArea > 100:
 					cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
 					cv2.drawContours(frameCopy, contour, -1, (0,0,255), 1)
 	
-					if frameCount > 15:	
+					if frameCount > 1:	
 						dropletCount = dropletCount + 1
 						frameCount = 0
 						blueDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[255,1,1])
 						redDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[1,1,255])
 					
 						if blueDist < 2000:
-							print dropletCount, " blue", cv2.contourArea(contour)*pixelToMMRatio, cv2.contourArea(contour)
+							print dropletCount, " blue", cv2.contourArea(contour)*pixelToMMRatio, cv2.contourArea(contour), frameCopy[y+h/2][x+w/2]
 						else:
-							print dropletCount, " red", cv2.contourArea(contour)*pixelToMMRatio
+							print dropletCount, " red", cv2.contourArea(contour)*pixelToMMRatio, cv2.contourArea(contour), frameCopy[y+h/2][x+w/2]
 
 		cv2.imshow("frame", frameCopy)
 

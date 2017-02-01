@@ -3,7 +3,7 @@ class CharacterizationOutputFormatting:
 		self.formatting = ""
 		self.data = ""
 		self.outputPath = ""
-	
+		self.dataToFormat = []	
 	def setFormat(inputFormat):
 		self.formatting = inputFormat
 
@@ -29,6 +29,9 @@ class CharacterizationOutputFormatting:
 			valid = False
 		
 		return valid
+
+	def addData(singleDataArray):
+		dataToFormat.append(singleDataArray)
 
 	def doFormatting():
 		if self.checkOutputRequirements() is False:

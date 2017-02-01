@@ -9,4 +9,6 @@ class ComputationalFunctions():
 		d = sum((2+rm,4,3-rm)*(rgb1-rgb2)**2)**0.5
 		return d
 
-	
+	@staticmethod
+	def rectangleAreaFromPoints(lowX, lowY, highX, highY):
+		return (highY-lowY) * (highX - lowX)
