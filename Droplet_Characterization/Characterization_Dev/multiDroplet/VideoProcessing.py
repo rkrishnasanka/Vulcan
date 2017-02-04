@@ -2,44 +2,63 @@ import numpy as np
 import cv2
 import argparse
 
+import os,sys
+path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if not path in sys.path:
+	sys.path.insert(1, path)
+del path
+
+from VulcanParseAndFormatting import *
+from VulcanUsefulFunctions import *
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video", help = "path to the video")
 args = vars(ap.parse_args())
 
-#video = cv2.VideoCapture(args["video"])
+video = cv2.VideoCapture(args["video"])
 bgSub = cv2.createBackgroundSubtractorMOG2()
 
-video = cv2.VideoCapture(0)
-
 while (video.isOpened()):
-	ret, frame = video.read()
-	if ret == True:
-		frameCopy = frame
-		frame = cv2.medianBlur(frame, 13)
-#		frame = cv2.Canny(frame, 100, 100)
-		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-#		frame = bgSub.apply(frame)
-#		frame = cv2.Canny(frame, 100, 100)
+	ret1, frame1 = video.read()
+#	ret2, frame2 = video.read()
+	if ret1 == True:
 
-#		th3 = cv2.adaptiveThreshold(frame,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,11,2)			
-		thresh = cv2.threshold(frame,130,255,cv2.THRESH_BINARY)[1]
-		im2, contours, hierarchy = cv2.findContours(thresh.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)	
+		frame1Copy = frame1.copy()
+#		frame2Copy = frame2
 
-		for cnt in contours:
-#			approx = cv2.approxPolyDP(cnt, 0.01*cv2.arcLength(cnt,True), True)
+		frame1Copy = cv2.cvtColor(frame1Copy.copy(), cv2.COLOR_BGR2GRAY)
+#		frame2Copy = cv2.cvtColor(frame2Copy, cv2.COLOR_BGR2GRAY)
+		
+#		frame1Copy = cv2.medianBlur(frame1Copy, 11)
+		frame1Copy = cv2.GaussianBlur(frame1Copy.copy(), (5, 5), 0)
 
-#			if len (approx) == 4:
-#				print  "square"
-			x,y,w,h = cv2.boundingRect(cnt)
+#		frame1Copy = bgSub.apply(frame1Copy)
+	
+#		diffFrame = cv2.absdiff(frame1Copy, frame2Copy)
+#		diffFrame = cv2.Canny(frame1Copy, 25, 100)
 
-			if y > 200:	
-				cv2.drawContours(frameCopy,[cnt],-1,(0,0,255),1)
-				cv2.rectangle(frameCopy, (x,y), (x+w, y+h),(0,255,0),1)
-#				cv2.imshow("frame", thresh)
-#		cv2.drawContours(frameCopy, contours, -1, (0,255,0), 1)
-		cv2.imshow("frame", thresh)
-#		cv2.imshow("thresh", thresh)
-#		cv2.imshow("copy", frameCopy)
+#		ret, frame1Copy = cv2.threshold(frame1Copy, 100, 255, cv2.THRESH_BINARY_INV)		
+		frame1Copy = cv2.adaptiveThreshold(frame1Copy.copy(), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
+	#	frame1Copy = cv2.erode(frame1Copy, None, iterations=1)
+	#	frame1Copy = cv2.dilate(frame1Copy, None, iterations=2)
+		im2, contours, hierarchy = cv2.findContours(frame1Copy.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+		if len(contours) > 0:
+			cv2.drawContours(frame1Copy, contours, -1, (255,255,255), -1)
+
+			hulls = [cv2.convexHull(cnt) for cnt in contours]
+
+			for hull in hulls:
+				cv2.fillConvexPoly(frame1Copy, hull, (255,255,255), lineType=8, shift=0)
+				
+#				x,y,w,h = cv2.boundingRect(hull)
+#				cv2.rectangle(frame1Copy, (x,y), (x+w,y+h), (255,255,255),1)
+#			for contour in contours:
+#				hulls.append(cv2.convexHull(contour))
+
+#			cv2.drawContours(frame1Copy, hulls[0], -1 (255,255,255), -1)
+	
+		cv2.imshow("frame", frame1Copy)
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			break
 	else:

@@ -45,12 +45,13 @@ while (video.isOpened()):
 #		frame = clahe.apply(frame)
 	
 		frame = cv2.medianBlur(frame, 5)
-		frame = bgSub.apply(frame, None, 0.01)
+#		frame = bgSub.apply(frame, None, 0.01)
+		lolFrame = frame		
 	
 	#	ret, thresh = cv2.threshold(frame,127,255,0)
 #		frame = cv2.Canny(frame, 25, 150)			
 		#ret, frame = cv2.threshold(frame,150,255,cv2.THRESH_BINARY)
-		im2, contours, hierarchy = cv2.findContours(frame,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)	
+#		im2, contours, hierarchy = cv2.findContours(frame,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)	
 
 		areas = []
 		largestContour = []
@@ -89,7 +90,7 @@ while (video.isOpened()):
 						else:
 							print dropletCount, " red", cv2.contourArea(contour)*pixelToMMRatio, cv2.contourArea(contour), frameCopy[y+h/2][x+w/2]
 
-		cv2.imshow("superCopy", frameCopy)
+		cv2.imshow("superCopy", lolFrame)
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			break
 	else:
