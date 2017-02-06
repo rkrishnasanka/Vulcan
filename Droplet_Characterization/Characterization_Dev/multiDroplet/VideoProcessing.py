@@ -30,7 +30,7 @@ while (video.isOpened()):
 #		frame2Copy = cv2.cvtColor(frame2Copy, cv2.COLOR_BGR2GRAY)
 		
 #		frame1Copy = cv2.medianBlur(frame1Copy, 13)
-		frame1Copy = cv2.GaussianBlur(frame1Copy.copy(), (5, 5), 0)
+		frame1Copy = cv2.GaussianBlur(frame1Copy.copy(), (7, 7), 0)
 
 #		frame1Copy = bgSub.apply(frame1Copy)
 	
@@ -46,23 +46,38 @@ while (video.isOpened()):
 		if len(contours) > 0:
 			cv2.drawContours(frame1Copy, contours, -1, (255,255,255), -1)
 
-			hulls = [cv2.convexHull(cnt) for cnt in contours]
+			hulls = [cv2.convexHull(cnt) for cnt in contours if cv2.contourArea(cnt) > 500]
 
-			for hull in hulls:
-				cv2.fillConvexPoly(im2, hull, (255,255,255), lineType=8, shift=0)
+#			for hull in hulls:
+#				cv2.fillConvexPoly(im2, hull, (255,255,255), lineType=8, shift=0)
 
-				x,y,w,h = cv2.boundingRect(hull)
-				cv2.rectangle(frame1, (x,y), (x+w,y+h), (0,255,0),1)
+#				x,y,w,h = cv2.boundingRect(hull)
+#				cv2.rectangle(frame1, (x,y), (x+w,y+h), (0,255,0),1)
 
-			im3, contourz, hierarchies = cv2.findContours(im2.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-			cv2.drawContours(im3, contourz, -1, (255,255,255), -1)
+#			im3, contourz, hierarchies = cv2.findContours(im2.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+			im3 = frame1.copy()
+			cv2.drawContours(im3, hulls, -1, (255,255,255), -1)
+#			im3 = cv2.erode(im3, None, iterations = 7)
+			im3 = cv2.dilate(im3, None, iterations=6)
+			im3 = cv2.erode(im3, None, iterations=6)
+			im3 = cv2.cvtColor(im3.copy(), cv2.COLOR_BGR2GRAY)	
+			im3 = cv2.adaptiveThreshold(im3.copy(), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
+
+			im4, contourz, hierarchy = cv2.findContours(im3.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+			#im5 = type(im4)
+		
+			hullz = [cv2.convexHull(cnt) for cnt in contourz if cv2.contourArea(cnt) > 2000]
+			cv2.drawContours(im4, hullz, -1, (255, 255, 255), -1)
+		#	im4, contourz, hierarchy = cv2.findContours(im3.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+			
 #			for contour in contours:
 #				hulls.append(cv2.convexHull(contour))
 
 			#cv2.drawContours(frame1, hulls[0], -1 (255,255,255), -1)
 
 #		cv2.imshow("im2", im2)	
-		cv2.imshow("im3", im3)
+		cv2.imshow("im3", im4)
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			break
 	else:
