@@ -51,7 +51,7 @@ while (video.isOpened()):
 	#	ret, thresh = cv2.threshold(frame,127,255,0)
 #		frame = cv2.Canny(frame, 25, 150)			
 		#ret, frame = cv2.threshold(frame,150,255,cv2.THRESH_BINARY)
-#		im2, contours, hierarchy = cv2.findContours(frame,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)	
+		im2, contours, hierarchy = cv2.findContours(frame,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)	
 
 		areas = []
 		largestContour = []

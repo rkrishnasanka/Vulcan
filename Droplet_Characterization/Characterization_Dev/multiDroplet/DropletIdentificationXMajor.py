@@ -14,7 +14,7 @@ video = cv2.VideoCapture(ap.args["video"])
 outFormat = CharacterizationOutputFormatting()
 
 bgSub = cv2.createBackgroundSubtractorMOG2()
-X_DETECTION_BORDER = 50
+X_DETECTION_BORDER = 75
 
 movingAverageArea = 0
 
@@ -41,7 +41,8 @@ while (video.isOpened()):
 #		frame = bgSub.apply(frame)
 	#	ret, thresh = cv2.threshold(frame,127,255,0)
 		frame = cv2.Canny(frame, 100, 100)			
-		ret, thresh = cv2.threshold(frame,127,255,0)
+#		ret, thresh = cv2.threshold(frame,127,255,0)
+		thresh = cv2.adaptiveThreshold(frame.copy(), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
 		im2, contours, hierarchy = cv2.findContours(thresh,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)	
 
 		areas = []
@@ -66,11 +67,11 @@ while (video.isOpened()):
 				cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,0,255),1)
 				cv2.drawContours(frameCopy, contour, -1, (0,0,255), 1)
 			
-				if x+w < X_DETECTION_BORDER and cArea > 100:
+				if x+w < X_DETECTION_BORDER and cArea > 1000:
 					cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
 					cv2.drawContours(frameCopy, contour, -1, (0,0,255), 1)
 	
-					if frameCount > 1:	
+					if frameCount > 10:	
 						dropletCount = dropletCount + 1
 						frameCount = 0
 						blueDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[255,1,1])

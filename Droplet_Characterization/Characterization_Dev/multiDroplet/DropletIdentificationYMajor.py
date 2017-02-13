@@ -10,8 +10,8 @@ from VulcanParseAndFormatting import *
 from VulcanUsefulFunctions import *
 
 ap = CharacterizationInputParsing()
-#video = cv2.VideoCapture(ap.args["video"])
-video = cv2.VideoCapture(0)
+video = cv2.VideoCapture(ap.args["video"])
+#video = cv2.VideoCapture(0)
 outFormat = CharacterizationOutputFormatting()
 
 bgSub = cv2.createBackgroundSubtractorMOG2()
@@ -67,10 +67,10 @@ while (video.isOpened()):
 						blueDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[255,1,1])
 						redDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[1,1,255])
 					
-#						if blueDist < 2000:
-#							print dropletCount, " blue", cv2.contourArea(contour)*pixelToMMRatio
-#						else:
-#							print dropletCount, " red", cv2.contourArea(contour)*pixelToMMRatio
+						if blueDist < 2000:
+							print dropletCount, " blue", cv2.contourArea(contour)*pixelToMMRatio
+						else:
+							print dropletCount, " red", cv2.contourArea(contour)*pixelToMMRatio
 
 		cv2.imshow("frame", frameCopy)
 
