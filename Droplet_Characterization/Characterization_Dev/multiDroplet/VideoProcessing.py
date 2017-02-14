@@ -15,8 +15,8 @@ ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video", help = "path to the video")
 args = vars(ap.parse_args())
 
-#video = cv2.VideoCapture(args["video"])
-video = cv2.VideoCapture(0)
+video = cv2.VideoCapture(args["video"])
+#video = cv2.VideoCapture(0)
 bgSub = cv2.createBackgroundSubtractorMOG2()
 
 X_DETECTION_BORDER = 1000
