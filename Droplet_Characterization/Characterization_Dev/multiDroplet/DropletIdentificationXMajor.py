@@ -26,7 +26,7 @@ elapsedFrames = 0
 channelWidthInPixels = 0
 pixelToMMRatio = 0
 
-countFlipper = False
+currentEclipse = False
 countedArea = False
 macroCountedArea = False
 
@@ -83,10 +83,10 @@ while (video.isOpened()):
 						largestReferenceArea = currentContour
 				
 				if x+w > X_DETECTION_BORDER and x < X_DETECTION_BORDER and y > Y_DETECTION_BORDER and cArea > 375:
-					if countFlipper is False:
+					if currentEclipse is False:
 						cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
 				#	cv2.drawContours(frameCopy, contour, -1, (0,0,255), 1)
-					countFlipper = True
+					currentEclipse = True
 
 					if frameCount > 0:
 						dropletCount = dropletCount + 1
@@ -111,7 +111,7 @@ while (video.isOpened()):
 			referenceSize = savedX+savedW * savedH
 			pixelToMMRatio = float(1) / referenceSize
 
-		if countFlipper is False:
+		if currentEclipse is False:
 			frameCount = frameCount + 1
 
 		cv2.imshow("frame", frameCopy)
