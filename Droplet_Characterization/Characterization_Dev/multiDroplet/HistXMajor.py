@@ -50,6 +50,7 @@ while (video.isOpened()):
 		cv2.line(frameCopy, (X_DETECTION_BORDER,0), (X_DETECTION_BORDER,600), (255,0,0))
 		cv2.line(frameCopy, (0, Y_DETECTION_BORDER), (1000, Y_DETECTION_BORDER), (255,0,0))
 		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+		frame = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(12,12)).apply(frame)
 		frame = cv2.medianBlur(frame, 13)
 		thresh = cv2.adaptiveThreshold(frame.copy(), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
 		im2, contours, hierarchy = cv2.findContours(thresh,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)	
@@ -114,7 +115,7 @@ while (video.isOpened()):
 		if countFlipper is False:
 			frameCount = frameCount + 1
 
-		cv2.imshow("frame", frameCopy)
+		cv2.imshow("frame", frame)
 
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			break

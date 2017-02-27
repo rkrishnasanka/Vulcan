@@ -57,7 +57,7 @@ while (video.isOpened()):
 					pixelToMMRatio = 1 / float(channelWidthInPixels)
 #					print channelWidthInPixels, pixelToMMRatio
 
-				cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(255,0,0),1)
+				cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,0,255),1)
 
 				if y+h < 100 and cArea > 100:
 					cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
