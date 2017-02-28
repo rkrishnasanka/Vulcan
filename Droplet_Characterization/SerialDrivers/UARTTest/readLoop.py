@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import serial
 import time
+import  subprocess
+
 ser = serial.Serial(
   port='/dev/ttyS0',
   baudrate = 115200,
@@ -23,4 +25,7 @@ while True:
 	x += ser.read(dataLeft)
 	print "got '" + x + "'"
 
+	if x == 'Begin running program':
+		print "STARTING\n"
+		subprocess.Popen('python runnableProg.py', shell=True).wait()
 ser.close()

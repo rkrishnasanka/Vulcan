@@ -15,11 +15,13 @@ time.sleep(3)
 
 print "Serial is open: " + str(ser.isOpen())
 
-for writeIterator in range(10):
-	print "Now Writing", writeIterator
-	ser.write("Test: ")
-	ser.write(str(writeIterator))
-	ser.write('\n')
+#for writeIterator in range(10):
+#	print "Now Writing", writeIterator
+#	ser.write("Test: ")
+#	ser.write(str(writeIterator))
+#	ser.write('\n')
+
+ser.write("Begin running program")
 
 print "Finished write, now closing"
 
