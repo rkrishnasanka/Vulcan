@@ -105,7 +105,7 @@ while (video.isOpened()):
 					if frameCount > 0:
 						dropletCount = dropletCount + 1
 
-						print "Frames since last droplet:", frameCount
+					#	print "Frames since last droplet:", frameCount
 
 						frameCount = 0
 						blueDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[255,1,1])
@@ -134,6 +134,8 @@ while (video.isOpened()):
 
 			if eclipseFrames is not 0:
 				print "Duration that the droplet was within the zone:", eclipseFrames
+				outputList[-1].append(eclipseFrames)
+				outputList[-1].append(dropletCount)
 			eclipseFrames = 0
 		# If we are in an eclipse, track how many frames it is occuring for
 		else:
