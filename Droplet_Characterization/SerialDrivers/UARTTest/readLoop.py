@@ -23,9 +23,9 @@ while True:
 	time.sleep(1)
 	dataLeft = ser.inWaiting()
 	x += ser.read(dataLeft)
-	print "got '" + x + "'"
-
-	if x == 'Begin running program':
+	x = ''.join(c for c in x if c.isalnum())
+	print(x)
+	if x == 'Beginrunningprogram':
 		print "STARTING\n"
 		subprocess.Popen('python runnableProg.py', shell=True).wait()
 ser.close()
