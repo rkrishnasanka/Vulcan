@@ -9,9 +9,11 @@ import cv2
 from VulcanParseAndFormatting import *
 from VulcanUsefulFunctions import *
 import time
+import math
 
 ap = CharacterizationInputParsing()
 video = cv2.VideoCapture(ap.args["video"])
+videoFPS = int(ap.args["fps"])
 outFormat = CharacterizationOutputFormatting()
 
 bgSub = cv2.createBackgroundSubtractorMOG2()
@@ -21,7 +23,7 @@ movingAverageArea = 0
 
 frameCount = 1
 dropletCount = 0
-elapsedFrames = 0
+totalFramesElapsed = 0
 eclipseFrames = 0
 
 channelWidthInPixels = 0
@@ -30,12 +32,11 @@ pixelToMMRatio = 0
 currentEclipse = False
 countedArea = False
 macroCountedArea = False
-
-largestReferenceArea = 0
 referenceSize = 0
+largestReferenceArea = 0
 
 outputList = []
-outputList.append(['Droplet #', 'Area in mm^2', 'BGR', 'frames since last droplet','frames in eclipse', 'frame when counted'])
+outputList.append(['Droplet #', 'Area in mm^2', 'BGR', 'frames since last droplet','speed in mm/sec', 'frame when counted'])
 
 def ColorDistance(rgb1,rgb2):
 	'''d = {} distance between two colors(3)'''
@@ -47,7 +48,7 @@ def ColorDistance(rgb1,rgb2):
 while (video.isOpened()):
 	ret, frame = video.read()
 	if ret == True:
-		elapsedFrames = elapsedFrames + 1
+		totalFramesElapsed = totalFramesElapsed + 1
 		currentEclipse = False
 		frameCopy = frame
 
@@ -117,14 +118,17 @@ while (video.isOpened()):
 						
 						dropletRGB = frameCopy[y+h/2][x+w/2]
 					#	print dropletCount, cv2.contourArea(contour)*pixelToMMRatio, cv2.contourArea(contour), dropletRGB
-						outputList.append([dropletCount, cv2.contourArea(contour)*pixelToMMRatio, dropletRGB.copy(), frameCount])
+						areaInMMSquared = cv2.contourArea(contour)*pixelToMMRatio
+						diameterInMM = math.sqrt(areaInMMSquared / math.pi)*2
+
+						outputList.append([dropletCount, areaInMMSquared, dropletRGB.copy(), float(diameterInMM / frameCount / videoFPS)])
 						cv2.circle(frameCopy, (x+w/2, y+h/2), 3, (0,255,0), -1)	
 						frameCount = 0
 	
 			if countedArea is True:
 				macroCountedArea = True
 
-		if macroCountedArea is True and elapsedFrames > 10:
+		if macroCountedArea is True and totalFramesElapsed > 10:
 			cv2.rectangle(frameCopy, (savedX, savedY), (savedX+savedW, savedY+savedH), (0,255,0),1)
 			referenceSize = savedX+savedW * savedH
 			pixelToMMRatio = float(1) / referenceSize
@@ -136,7 +140,7 @@ while (video.isOpened()):
 			if eclipseFrames is not 0:
 		#		print "Duration that the droplet was within the zone:", eclipseFrames
 				outputList[-1].append(eclipseFrames)
-				outputList[-1].append(elapsedFrames)
+				outputList[-1].append(totalFramesElapsed)
 			eclipseFrames = 0
 		# If we are in an eclipse, track how many frames it is occuring for
 		else:
@@ -150,8 +154,11 @@ while (video.isOpened()):
 		break
 
 for dropletInfo in outputList:
-#	dropletInfo[1] = dropletInfo[1]*pixelToMMRatio
 	print dropletInfo
+
+avgDropletRate = float(dropletCount / (totalFramesElapsed / videoFPS))
+
+print "average droplet rate", avgDropletRate
 
 video.release()
 cv2.destroyAllWindows()
