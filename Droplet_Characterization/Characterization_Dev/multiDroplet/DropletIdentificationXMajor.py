@@ -35,6 +35,7 @@ largestReferenceArea = 0
 referenceSize = 0
 
 outputList = []
+outputList.append(['Droplet #', 'Area in mm^2', 'BGR', 'frames since last droplet','frames in eclipse', 'frame when counted'])
 
 def ColorDistance(rgb1,rgb2):
 	'''d = {} distance between two colors(3)'''
@@ -107,7 +108,6 @@ while (video.isOpened()):
 
 					#	print "Frames since last droplet:", frameCount
 
-						frameCount = 0
 						blueDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[255,1,1])
 						redDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[1,1,255])
 					
@@ -116,9 +116,10 @@ while (video.isOpened()):
 					#	else:
 						
 						dropletRGB = frameCopy[y+h/2][x+w/2]
-						print dropletCount, cv2.contourArea(contour)*pixelToMMRatio, cv2.contourArea(contour), dropletRGB
-						outputList.append([dropletCount, cv2.contourArea(contour), dropletRGB.copy()])
+					#	print dropletCount, cv2.contourArea(contour)*pixelToMMRatio, cv2.contourArea(contour), dropletRGB
+						outputList.append([dropletCount, cv2.contourArea(contour)*pixelToMMRatio, dropletRGB.copy(), frameCount])
 						cv2.circle(frameCopy, (x+w/2, y+h/2), 3, (0,255,0), -1)	
+						frameCount = 0
 	
 			if countedArea is True:
 				macroCountedArea = True
@@ -133,9 +134,9 @@ while (video.isOpened()):
 			frameCount = frameCount + 1
 
 			if eclipseFrames is not 0:
-				print "Duration that the droplet was within the zone:", eclipseFrames
+		#		print "Duration that the droplet was within the zone:", eclipseFrames
 				outputList[-1].append(eclipseFrames)
-				outputList[-1].append(dropletCount)
+				outputList[-1].append(elapsedFrames)
 			eclipseFrames = 0
 		# If we are in an eclipse, track how many frames it is occuring for
 		else:
@@ -149,7 +150,8 @@ while (video.isOpened()):
 		break
 
 for dropletInfo in outputList:
-	dropletInfo[1] = dropletInfo[1]*pixelToMMRatio
+#	dropletInfo[1] = dropletInfo[1]*pixelToMMRatio
+	print dropletInfo
 
 video.release()
 cv2.destroyAllWindows()

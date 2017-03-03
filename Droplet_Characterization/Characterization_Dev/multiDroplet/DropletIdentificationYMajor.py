@@ -58,7 +58,7 @@ while (video.isOpened()):
 #					print channelWidthInPixels, pixelToMMRatio
 
 				if y+h < 100 and cArea > 100:
-					cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
+#					cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
 					cv2.drawContours(frameCopy, contour, -1, (0,0,255), 1)
 			
 					if frameCount > 10:	
@@ -69,8 +69,10 @@ while (video.isOpened()):
 					
 						if blueDist < 2000:
 							print dropletCount, " blue", cv2.contourArea(contour)*pixelToMMRatio
+							cv2.rectangle(frameCopy, (x,y), (x+w, y+h), (255,0,0),1)
 						else:
 							print dropletCount, " red", cv2.contourArea(contour)*pixelToMMRatio
+							cv2.rectangle(frameCopy, (x,y), (x+w, y+h), (0,0,255), 1)
 
 		cv2.imshow("frame", frameCopy)
 
