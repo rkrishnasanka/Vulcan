@@ -14,7 +14,10 @@ import math
 ap = CharacterizationInputParsing()
 video = cv2.VideoCapture(ap.args["video"])
 videoFPS = int(ap.args["fps"])
+
 outFormat = CharacterizationOutputFormatting()
+outFormat.setFormat(ap.args["output"])
+outFormat.setOutputPath(ap.args["filename"])
 
 bgSub = cv2.createBackgroundSubtractorMOG2()
 X_DETECTION_BORDER = 100
@@ -157,6 +160,9 @@ for dropletInfo in outputList:
 	print dropletInfo
 
 avgDropletRate = float(dropletCount / (totalFramesElapsed / videoFPS))
+
+outFormat.setData(outputList)
+outFormat.doFormattingAndWriting()
 
 print "average droplet rate", avgDropletRate
 

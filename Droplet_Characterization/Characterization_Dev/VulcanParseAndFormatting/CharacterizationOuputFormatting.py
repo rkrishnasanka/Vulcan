@@ -1,3 +1,5 @@
+import csv
+
 class CharacterizationOutputFormatting:
 	def __init__(self):
 		self.formatting = ""
@@ -30,11 +32,21 @@ class CharacterizationOutputFormatting:
 		
 		return valid
 
-	def addData(singleDataArray):
-		dataToFormat.append(singleDataArray)
+#	def addData(singleDataArray):
+#		dataToFormat = singleDataArray
 
-	def doFormatting():
+	def doFormattingAndWriting():
 		if self.checkOutputRequirements() is False:
 			return False
 
+		if self.formatting == "csv"
+			try:
+				self.outputCSV(self.data, self.outputPath)
+
+			except:
+				print ":("
+
+	def outputCSV(data, path):
+		open(path, 'w', newline='') as fileDescriptor:
+			csv.writer(fileDescriptor, delimiter=",").writerows(data)
 		
