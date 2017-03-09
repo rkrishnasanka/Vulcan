@@ -13,6 +13,7 @@ import math
 
 ap = CharacterizationInputParsing()
 video = cv2.VideoCapture(ap.args["video"])
+#video = cv2.VideoCapture(0)
 videoFPS = int(ap.args["fps"])
 
 outFormat = CharacterizationOutputFormatting()
@@ -42,16 +43,11 @@ largestReferenceArea = 0
 outputList = []
 outputList.append(['Droplet #', 'Area in mm^2', 'BGR', 'frames since last droplet','speed in mm/sec', 'frame when counted'])
 
-def ColorDistance(rgb1,rgb2):
-	'''d = {} distance between two colors(3)'''
-	rm = 0.5*(rgb1[0]+rgb2[0])
-	d = sum((2+rm,4,3-rm)*(rgb1-rgb2)**2)**0.5
-	return d
-
 try:
 	# Main loop to read in frames
 	while (video.isOpened()):
 		ret, frame = video.read()
+#		cv2.imshow("frame", frame)
 		if ret == True:
 			totalFramesElapsed = totalFramesElapsed + 1
 			currentEclipse = False
@@ -153,6 +149,11 @@ try:
 
 			cv2.imshow("frame", frameCopy)
 
+			if cv2.waitKey(1) & 0xFF == ord('q'):
+				break
+
+#			cv2.imshow("frame", frameCopy)
+#			print "Hello!!!"
 		else:
 			break
 
