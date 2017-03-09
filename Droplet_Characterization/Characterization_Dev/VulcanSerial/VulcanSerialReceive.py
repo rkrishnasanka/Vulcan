@@ -3,7 +3,7 @@ import time
 import subprocess
 
 class VulcanSerialReceive:
-	def __init__(self, portDes='/dev/ttyS0', baud=115200, timeOut=1):
+	def __init__(self, portDes='/dev/ttyS0', baud=115200, timeOut=1, lineEndings = '\r\n'):
 		self.serialPort = serial.Serial(
 			port = portDes,
 			baudrate = baud,
@@ -12,6 +12,8 @@ class VulcanSerialReceive:
 			bytesize = serial.EIGHTBITS,
 			timeout = timeOut
 		)
+
+		self.lineEndings = lineEndings
 
 	def tryRead(self):
 		try:
@@ -29,7 +31,7 @@ class VulcanSerialReceive:
 	def tryWrite(self, itemToWrite):
 		try:
 			ser.write(str(itemToWrite))
-			ser.write("\r\n")
+			ser.write(self.lineEndings)
 			return True
 
 		except Exception as e:
