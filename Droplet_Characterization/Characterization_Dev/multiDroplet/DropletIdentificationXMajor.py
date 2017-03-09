@@ -44,7 +44,7 @@ largestReferenceArea = 0
 outputList = []
 outputList.append(['Droplet #', 'Area in mm^2', 'BGR', 'frames since last droplet','speed in mm/sec', 'frame when counted'])
 
-serialPort = VulcanSerialReceive()
+serialPort = VulcanSerial()
 
 try:
 	# Main loop to read in frames

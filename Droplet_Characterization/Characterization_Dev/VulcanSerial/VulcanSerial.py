@@ -2,7 +2,7 @@ import serial
 import time
 import subprocess
 
-class VulcanSerialReceive:
+class VulcanSerial:
 	def __init__(self, portDes='/dev/ttyS0', baud=115200, timeOut=1, lineEndings = '\r\n'):
 		self.serialPort = serial.Serial(
 			port = portDes,
