@@ -10,7 +10,7 @@ class CharacterizationInputParsing:
 		self.parsing.add_argument("-o", "--output", default= "csv", help = "output formatting")
 		self.parsing.add_argument("-f", "--format", action= "append",  help = "Formatting for the output, use -f for each section. E.g: -f option1 -f option2 -f option3")
 		self.parsing.add_argument("-fps", "--fps", default= 1, help = "Stream FPS")
-		self.parsing.add_argument("-filename:", "--filename", help = "Name of output file")
+		self.parsing.add_argument("-filename", "--filename", default="characterizationOutput", help = "Name of output file")
 
 		self.args = vars(self.parsing.parse_args())
 		argcomplete.autocomplete(self.parsing)

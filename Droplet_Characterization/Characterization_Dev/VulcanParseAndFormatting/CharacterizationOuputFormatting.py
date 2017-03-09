@@ -6,16 +6,16 @@ class CharacterizationOutputFormatting:
 		self.data = ""
 		self.outputPath = ""
 		self.dataToFormat = []	
-	def setFormat(inputFormat):
+	def setFormat(self, inputFormat):
 		self.formatting = inputFormat
 
-	def setOutputPath(inputPath):
+	def setOutputPath(self, inputPath):
 		self.outputPath = inputPath
 
-	def setData(inputData):
+	def setData(self, inputData):
 		self.data = inputData
 
-	def checkOutputRequirements():
+	def checkOutputRequirements(self):
 		valid = True
 	
 		if not self.data:
@@ -35,18 +35,18 @@ class CharacterizationOutputFormatting:
 #	def addData(singleDataArray):
 #		dataToFormat = singleDataArray
 
-	def doFormattingAndWriting():
+	def doFormattingAndWriting(self):
 		if self.checkOutputRequirements() is False:
 			return False
 
-		if self.formatting == "csv"
+		if self.formatting == "csv":
 			try:
 				self.outputCSV(self.data, self.outputPath)
 
-			except:
-				print ":("
+			except Exception as e:
+				print e
 
-	def outputCSV(data, path):
-		open(path, 'w', newline='') as fileDescriptor:
+	def outputCSV(self, data, path):
+		with open(path, 'w') as fileDescriptor:
 			csv.writer(fileDescriptor, delimiter=",").writerows(data)
 		
