@@ -8,6 +8,7 @@ import numpy as np
 import cv2
 from VulcanParseAndFormatting import *
 from VulcanUsefulFunctions import *
+from VulcanSerial import *
 import time
 import math
 
@@ -42,6 +43,8 @@ largestReferenceArea = 0
 
 outputList = []
 outputList.append(['Droplet #', 'Area in mm^2', 'BGR', 'frames since last droplet','speed in mm/sec', 'frame when counted'])
+
+serialPort = VulcanSerialReceive()
 
 try:
 	# Main loop to read in frames
@@ -152,8 +155,8 @@ try:
 			if cv2.waitKey(1) & 0xFF == ord('q'):
 				break
 
-#			cv2.imshow("frame", frameCopy)
-#			print "Hello!!!"
+	#		cv2.imshow("frame", frameCopy)
+	#		print "Hello!!!"
 		else:
 			break
 
