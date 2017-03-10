@@ -41,9 +41,9 @@ referenceSize = 0
 largestReferenceArea = 0
 
 outputList = []
-outputList.append(['Droplet #', 'Area in mm^2', 'BGR', 'frames since last droplet','speed in mm/sec', 'frame when counted'])
+outputList.append(['Droplet #', 'Area in mm^2', 'BGR', 'speed in mm/sec', 'frames since last droplet', 'frame when counted'])
 
-serialPort = VulcanSerial()
+#serialPort = VulcanSerial()
 
 try:
 	# Main loop to read in frames
@@ -150,13 +150,13 @@ try:
 			else:
 				eclipseFrames = eclipseFrames + 1
 
+			# Show frame 
 			cv2.imshow("frame", frameCopy)
 
-			if cv2.waitKey(1) & 0xFF == ord('q') or serialPort.tryRead() == 'quit':
+			# Need wait key for show frame apparently
+			if cv2.waitKey(1) & 0xFF == ord('q'):# or serialPort.tryRead() == 'quit':
 				break
 
-	#		cv2.imshow("frame", frameCopy)
-	#		print "Hello!!!"
 		else:
 			break
 
