@@ -14,7 +14,6 @@ import math
 
 ap = CharacterizationInputParsing()
 video = cv2.VideoCapture(ap.args["video"])
-#video = cv2.VideoCapture(0)
 videoFPS = int(ap.args["fps"])
 
 outFormat = CharacterizationOutputFormatting()
@@ -145,6 +144,7 @@ try:
 			#		print "Duration that the droplet was within the zone:", eclipseFrames
 					outputList[-1].append(eclipseFrames)
 					outputList[-1].append(totalFramesElapsed)
+				# Since we are not an in eclipse, reset the count
 				eclipseFrames = 0
 			# If we are in an eclipse, track how many frames it is occuring for
 			else:
@@ -152,7 +152,7 @@ try:
 
 			cv2.imshow("frame", frameCopy)
 
-			if cv2.waitKey(1) & 0xFF == ord('q'):
+			if cv2.waitKey(1) & 0xFF == ord('q') or serialPort.tryRead() == 'quit':
 				break
 
 	#		cv2.imshow("frame", frameCopy)
