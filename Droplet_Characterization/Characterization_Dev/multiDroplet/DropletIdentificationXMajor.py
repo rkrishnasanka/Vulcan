@@ -11,6 +11,13 @@ from VulcanUsefulFunctions import *
 from VulcanSerial import *
 import time
 import math
+import signal
+
+signal.signal(signal.SIGINT, SigHandler)
+
+def SigHandler(sigNum, frame):
+	raise KeyboardInterrupt, "Signal Handler"
+
 
 ap = CharacterizationInputParsing()
 video = cv2.VideoCapture(ap.args["video"])
