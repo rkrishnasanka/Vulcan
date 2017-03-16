@@ -30,12 +30,8 @@ void setup()
 void getError() {
   byte i = 0;
   //bottom of plate
-  float voltage = (analogRead(sensorPin) * 0.004882814);
-  float degreesC = (voltage - 0.5) * 100.0;
 
   //top of plate
-  float voltage2 = (analogRead(sensorPin2) * 0.004882814);
-  float degreesC2 = (voltage2 - 0.5) * 100.0;
 
   String stringa = "A0: ";
   String stringb = stringa + degreesC + "\t";

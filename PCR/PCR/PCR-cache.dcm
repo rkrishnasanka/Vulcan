@@ -6,12 +6,6 @@ K BC413 NPN Transistor
 F http://www.cdil.com/datasheets/bc413_14_b_c.pdf
 $ENDCMP
 #
-$CMP BC413-7
-D 30V Vce, 0.1A Ic, NPN, Small Signal Transistor, TO-92
-K BC413 NPN Transistor
-F http://www.cdil.com/datasheets/bc413_14_b_c.pdf
-$ENDCMP
-#
 $CMP BC413B
 D 30V Vce, 0.1A Ic, NPN, Small Signal Transistor, TO-92
 K BC413 NPN Transistor
