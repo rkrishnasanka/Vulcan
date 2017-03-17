@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name PCR)(type KiCad)(uri "$(KIPRJMOD)/PCR.pretty")(options "")(descr ""))
+)
