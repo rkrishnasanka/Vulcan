@@ -1,31 +1,29 @@
 import subprocess
-
+import os
 #with open('testLogs.log', 'w') as f:
 # Passing params through execve
 
-def execute(cmd):
-	p = subprocess.Popen(cmd, stdout = subprocess.PIPE, universal_newlines=True)
+proc = subprocess.Popen(['python', '-u', 'stdOutLoop.py'], stdout=subprocess.PIPE)
 
-	for stdout_line in iter(p.stdout.readline, ""):
-		yield stdout_line
+while True:
+	line = proc.stdout.readline()
 
-	p.stdout.close()
-	return_code = p.wait()
+	if line != '':
+		print line
 
-	if return_code:
-		raise subprocess.CalledProcessError(return_code, 'stdOutLoop.py')
+#def execute(cmd):
+#	p = subprocess.Popen(cmd, stdout = subprocess.PIPE, universal_newlines=True)
 
-for path in execute(['python','-u',  'stdOutLoop.py']):
-	print path,
+#	for stdout_line in iter(p.stdout.readline, ""):
+#		yield stdout_line
 
-#stdout = process.communicate()[0]
+#	p.stdout.close()
+#	return_code = p.wait()
 
-#while process.poll() is None:
-#	l = process.stdout.readline()
-#	print l
-#	sys.stdout.flush()
-#process.stdout.close()
-#print process.stdout.read()
+#	if return_code:
+#		raise subprocess.CalledProcessError(return_code, 'stdOutLoop.py')
 
-#for line in iter(process.stdout.readline, ''):
-#	print line
+#while True:
+#	print "lolhi"
+#	for path in execute(['python','-u',  'stdOutLoop.py']):
+#		print path,
