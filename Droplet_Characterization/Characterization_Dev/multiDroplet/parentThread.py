@@ -3,7 +3,7 @@ import os
 #with open('testLogs.log', 'w') as f:
 # Passing params through execve
 
-proc = subprocess.Popen(['python', '-u', 'stdOutLoop.py'], stdout=subprocess.PIPE)
+proc = subprocess.Popen(['python', '-u', 'DropletIdentificationYMajor.py', '-v', 'BlueAndRed.m4v'], stdout=subprocess.PIPE)
 
 count = 1
 
