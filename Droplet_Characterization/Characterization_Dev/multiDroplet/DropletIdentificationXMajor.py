@@ -13,7 +13,7 @@ import time
 import math
 import signal
 
-signal.signal(signal.SIGINT, SigHandler)
+# signal.signal(signal.SIGINT, SigHandler)
 
 def SigHandler(sigNum, frame):
 	raise KeyboardInterrupt, "Signal Handler"
@@ -29,8 +29,8 @@ outFormat.setFormat(ap.args["output"])
 outFormat.setOutputPath(ap.args["filename"])
 
 bgSub = cv2.createBackgroundSubtractorMOG2()
-X_DETECTION_BORDER = 100
-Y_DETECTION_BORDER = 400
+X_DETECTION_BORDER = 300
+Y_DETECTION_BORDER = 150
 movingAverageArea = 0
 
 frameCount = 1
@@ -48,7 +48,7 @@ referenceSize = 0
 largestReferenceArea = 0
 
 outputList = []
-outputList.append(['Droplet #', 'Area in mm^2', 'BGR', 'speed in mm/sec', 'frames since last droplet', 'frame when counted'])
+outputList.append(['Droplet #', 'Area in mm^2', 'area in pixels', 'BGR', 'speed in mm/sec', 'frames since last droplet', 'frame when counted'])
 
 #serialPort = VulcanSerial()
 
@@ -105,7 +105,7 @@ try:
 							largestReferenceArea = currentContour
 				
 					# If there is a new contour in the droplet zone, count it and characterize it
-					if x+w > X_DETECTION_BORDER and x < X_DETECTION_BORDER and y > Y_DETECTION_BORDER and cArea > 375:
+					if x+w > X_DETECTION_BORDER and x < X_DETECTION_BORDER and y > Y_DETECTION_BORDER and cArea > 300:
 						# Highlight the contour bound in green
 						if currentEclipse is False:
 							cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
@@ -131,7 +131,7 @@ try:
 							areaInMMSquared = cv2.contourArea(contour)*pixelToMMRatio
 							diameterInMM = math.sqrt(areaInMMSquared / math.pi)*2
 
-							outputList.append([dropletCount, areaInMMSquared, dropletRGB.copy(), float(diameterInMM / frameCount / videoFPS)])
+							outputList.append([dropletCount, areaInMMSquared, cv2.contourArea(contour), dropletRGB.copy(), float(diameterInMM / frameCount / videoFPS)])
 							cv2.circle(frameCopy, (x+w/2, y+h/2), 3, (0,255,0), -1)	
 							frameCount = 0
 	
@@ -170,7 +170,7 @@ try:
 	for dropletInfo in outputList:
 		print dropletInfo
 
-	avgDropletRate = float(dropletCount / (totalFramesElapsed / videoFPS))
+	avgDropletRate = float(float(dropletCount) / float(totalFramesElapsed / videoFPS))
 
 	outFormat.setData(outputList)
 	outFormat.doFormattingAndWriting()
