@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 Droplet #,Area in mm^2,area in pixels,BGR,speed in mm/sec,frames since last droplet,frame when counted
 1,0.0,1384.0,[  0   0 172],0.0,15,16
 2,0.1485366352844863,1451.5,[  0   0 176],0.000966405374356817,13,39
@@ -73,3 +74,6 @@ Droplet #,Area in mm^2,area in pixels,BGR,speed in mm/sec,frames since last drop
 72,0.3403602128530495,3326.0,[  0   0 174],0.0006966147150373372,40,2602
 73,0.3283360622185837,3208.5,[  1   0 174],0.0007184091292651515,41,2663
 74,0.3115534179287761,3044.5,[  0   0 176],0.0005831732084787323
+=======
+Droplet #,Area in mm^2,BGR,speed in mm/sec,frames since last droplet,frame when counted
+>>>>>>> Stashed changes

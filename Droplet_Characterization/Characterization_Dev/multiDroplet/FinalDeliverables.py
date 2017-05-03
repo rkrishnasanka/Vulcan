@@ -11,7 +11,6 @@ from VulcanUsefulFunctions import *
 
 ap = CharacterizationInputParsing()
 video = cv2.VideoCapture(ap.args["video"])
-#video = cv2.VideoCapture(0)
 outFormat = CharacterizationOutputFormatting()
 
 bgSub = cv2.createBackgroundSubtractorMOG2()
@@ -30,12 +29,14 @@ while (video.isOpened()):
 		frameCopy = frame
 
 		cv2.line( frameCopy, (0,100), (1200,100), (255,0,0))
-#		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-		frame = cv2.medianBlur(frame, 13)
-		frame = bgSub.apply(frame)
+		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+		frame = cv2.medianBlur(frame, 7)
+#		frame = bgSub.apply(frame)
 	
-		frame = cv2.Canny(frame,100,100)		
-		ret, thresh = cv2.threshold(frame,127,255,0)
+#		frame = cv2.Canny(frame,100,100)		
+#		ret, thresh = cv2.threshold(frame,127,255,0)
+
+		thresh = cv2.adaptiveThreshold(frame.copy(), 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
 		im2, contours, hierarchy = cv2.findContours(thresh,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)	
 
 		areas = []
@@ -51,15 +52,17 @@ while (video.isOpened()):
 #				print (cArea, movingAverageArea)
 #				if cArea > movingAverageArea:
 				x,y,w,h = cv2.boundingRect(contour)
+				cv2.drawContours(frameCopy, contour, -1, (0,0,255), 1)
+				cv2.rectangle(frameCopy, (x,y), (x+w,y+h), (0,0,255), 1)
 				BGR = frameCopy[y+h/2][x+w//2]
 				if channelWidthInPixels is 0:
 					channelWidthInPixels = (w + h) / 2
 					pixelToMMRatio = 1 / float(channelWidthInPixels)
 #					print channelWidthInPixels, pixelToMMRatio
 
-				if y+h < 100 and cArea > 100:
-#					cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
-					cv2.drawContours(frameCopy, contour, -1, (0,0,255), 1)
+				if y+h < 100 and cArea > 300:
+					cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
+					cv2.drawContours(frameCopy, contour, -1, (0,255,0), 1)
 			
 					if frameCount > 10:	
 						dropletCount = dropletCount + 1
@@ -67,11 +70,13 @@ while (video.isOpened()):
 						blueDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[255,1,1])
 						redDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[1,1,255])
 					
-						if blueDist < 2000:
-							print dropletCount, " blue", cv2.contourArea(contour)*pixelToMMRatio
+#						print blueDist
+
+						if blueDist > 1500:
+							print dropletCount, "blue", cv2.contourArea(contour)*pixelToMMRatio
 							cv2.rectangle(frameCopy, (x,y), (x+w, y+h), (255,0,0),1)
 						else:
-							print dropletCount, " red", cv2.contourArea(contour)*pixelToMMRatio
+							print dropletCount, "red", cv2.contourArea(contour)*pixelToMMRatio
 							cv2.rectangle(frameCopy, (x,y), (x+w, y+h), (0,0,255), 1)
 
 		cv2.imshow("frame", frameCopy)

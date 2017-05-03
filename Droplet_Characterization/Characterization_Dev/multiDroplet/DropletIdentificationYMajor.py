@@ -30,7 +30,7 @@ while (video.isOpened()):
 		frameCopy = frame
 
 		cv2.line( frameCopy, (0,100), (1200,100), (255,0,0))
-#		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 		frame = cv2.medianBlur(frame, 13)
 		frame = bgSub.apply(frame)
 	
@@ -61,17 +61,17 @@ while (video.isOpened()):
 #					cv2.rectangle(frameCopy,(x,y),(x+w,y+h),(0,255,0),1)
 					cv2.drawContours(frameCopy, contour, -1, (0,0,255), 1)
 			
-					if frameCount > 10:	
+					if frameCount > 5:	
 						dropletCount = dropletCount + 1
 						frameCount = 0
 						blueDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[255,1,1])
 						redDist = ComputationalFunctions.colorDistance(frameCopy[y+h/2][x+w/2],[1,1,255])
 					
 						if blueDist < 2000:
-							print dropletCount, " blue", cv2.contourArea(contour)*pixelToMMRatio
+							print dropletCount, "blue", cv2.contourArea(contour)*pixelToMMRatio
 							cv2.rectangle(frameCopy, (x,y), (x+w, y+h), (255,0,0),1)
 						else:
-							print dropletCount, " red", cv2.contourArea(contour)*pixelToMMRatio
+							print dropletCount, "red", cv2.contourArea(contour)*pixelToMMRatio
 							cv2.rectangle(frameCopy, (x,y), (x+w, y+h), (0,0,255), 1)
 
 		cv2.imshow("frame", frameCopy)

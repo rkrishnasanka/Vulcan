@@ -15,8 +15,8 @@ import signal
 
 # signal.signal(signal.SIGINT, SigHandler)
 
-def SigHandler(sigNum, frame):
-	raise KeyboardInterrupt, "Signal Handler"
+#def SigHandler(sigNum, frame):
+#	raise KeyboardInterrupt, "Signal Handler"
 
 
 ap = CharacterizationInputParsing()
@@ -29,8 +29,9 @@ outFormat.setFormat(ap.args["output"])
 outFormat.setOutputPath(ap.args["filename"])
 
 bgSub = cv2.createBackgroundSubtractorMOG2()
-X_DETECTION_BORDER = 300
-Y_DETECTION_BORDER = 150
+
+X_DETECTION_BORDER = 100
+Y_DETECTION_BORDER = 500
 movingAverageArea = 0
 
 frameCount = 1
